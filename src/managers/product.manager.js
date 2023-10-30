@@ -24,32 +24,15 @@ export class ProductManager {
     });
     return maxId;
   }
+  
   async createProduct(prod) {
     try {
       const product = {
         id: (await this.#getMaxId()) + 1,
-        ...prod,
+        status: true,
+        ...prod
       };
       const products = await this.getProducts();
-
-      const isCodeRepeated = products.some(
-        (existingProduct) => existingProduct.code === product.code
-      );
-      if (isCodeRepeated) {
-        throw new Error("Código de producto repetido!");
-      }
-
-      if (
-        !product.title ||
-        !product.description ||
-        !product.price ||
-        !product.img ||
-        !product.code ||
-        !product.stock
-      ) {
-        throw new Error("Error: Todos los campos son obligatorios.");
-      }
-
       products.push(product);
       await fs.promises.writeFile(this.path, JSON.stringify(products));
       return product;
@@ -70,28 +53,28 @@ export class ProductManager {
     }
   }
 
-  async updateProduct(obj, idProduct) {
-    try {
-      const products = await this.getProducts();
-      const productIndex = products.findIndex(
-        (product) => product.id === idProduct
-      );
-      if (productIndex === -1) return false;
-      else products[productIndex] = { ...obj, idProduct };
+  async updateProduct(obj, id) {
+  try {
+    const products = await this.getProducts();
+    const productIndex = products.findIndex(prod => prod.id === id);
+    if (productIndex === -1) return false;
+    else {
+      products[productIndex] = { ...products[productIndex], ...obj, id };
+
       await fs.promises.writeFile(this.path, JSON.stringify(products));
-      await this.getProducts();
-    } catch (error) {
-      console.log(error);
+      return products[productIndex];
     }
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
+}
 
   async deleteProduct(idProduct) {
     try {
       const products = await this.getProducts();
       if (products.length < 0) return false;
-      const updatedArray = products.filter(
-        (product) => product.id !== idProduct
-      );
+      const updatedArray = products.filter((product) => product.id !== idProduct);
       await fs.promises.writeFile(this.path, JSON.stringify(updatedArray));
     } catch (error) {
       console.log(error);
