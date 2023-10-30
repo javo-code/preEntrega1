@@ -1,6 +1,6 @@
 import fs from "fs";
 
-export class ProductManager {
+class ProductManager {
   constructor(path) {
     this.path = path;
   }
@@ -24,7 +24,7 @@ export class ProductManager {
     });
     return maxId;
   }
-  
+
   async createProduct(prod) {
     try {
       const product = {
@@ -54,21 +54,21 @@ export class ProductManager {
   }
 
   async updateProduct(obj, id) {
-  try {
-    const products = await this.getProducts();
-    const productIndex = products.findIndex(prod => prod.id === id);
-    if (productIndex === -1) return false;
-    else {
-      products[productIndex] = { ...products[productIndex], ...obj, id };
+    try {
+      const products = await this.getProducts();
+      const productIndex = products.findIndex(prod => prod.id === id);
+      if (productIndex === -1) return false;
+      else {
+        products[productIndex] = { ...products[productIndex], ...obj, id };
 
-      await fs.promises.writeFile(this.path, JSON.stringify(products));
-      return products[productIndex];
+        await fs.promises.writeFile(this.path, JSON.stringify(products));
+        return products[productIndex];
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-  } catch (error) {
-    console.log(error);
-    throw error;
   }
-}
 
   async deleteProduct(idProduct) {
     try {
@@ -91,3 +91,7 @@ export class ProductManager {
     }
   }
 }
+
+const productManager = new ProductManager("../preEntrega1/src/data/products.json")
+
+export { productManager }

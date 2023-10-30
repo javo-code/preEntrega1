@@ -1,11 +1,8 @@
 import { Router } from "express";
 const router = Router();
 
-import { ProductManager } from "../managers/product.manager.js";
 import { productValidator } from "../middleware/productValidator.js";
-const productManager = new ProductManager(
-    "../preEntrega1/src/data/products.json"
-);
+import { productManager } from "../managers/product.manager.js";
 
 //MOSTRAR TODOS LOS PRODUCTOS
 router.get("/", async (req, res) => {
@@ -13,10 +10,10 @@ router.get("/", async (req, res) => {
         const { limit } = req.query;
         const products = await productManager.getProducts();
         if (!limit) {
-        res.status(200).json(products);
+            res.status(200).json(products);
         } else {
-        const productsByLimit = await productManager.getProductByLimit(limit);
-        res.status(200).json(productsByLimit);
+            const productsByLimit = await productManager.getProductByLimit(limit);
+            res.status(200).json(productsByLimit);
         }
     } catch (error) {
         res.status(404).json({ message: "The product does not exist..." });
@@ -39,9 +36,9 @@ router.get("/:pid", async (req, res) => {
         const { pid } = req.params;
         const productById = await productManager.getProductById(Number(pid));
         if (!productById) {
-        res.status(404).json({ message: "The product does not exist..." });
+            res.status(404).json({ message: "The product does not exist..." });
         } else {
-        res.status(200).json(productById);
+            res.status(200).json(productById);
         }
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
@@ -56,12 +53,12 @@ router.put("/:id", async (req, res) => {
         const idNumber = Number(id);
         const productOk = await productManager.getProductById(idNumber);
         if (!productOk) {
-        res.status(404).json({ message: "The product does not exist..." });
+            res.status(404).json({ message: "The product does not exist..." });
         } else {
-        await productManager.updateProduct(product, idNumber);
-        res
-            .status(200)
-            .json({ message: `Product ID: ${id} updated successfully!` });
+            await productManager.updateProduct(product, idNumber);
+            res
+                .status(200)
+                .json({ message: `Product ID: ${id} updated successfully!` });
         }
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
