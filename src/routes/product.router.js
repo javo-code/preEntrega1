@@ -1,6 +1,5 @@
 import { Router } from "express";
 const router = Router();
-
 import { productValidator } from "../middleware/productValidator.js";
 import { productManager } from "../managers/product.manager.js";
 
@@ -22,7 +21,17 @@ router.get("/", async (req, res) => {
 
 //CREAR PRODUCTO.
 router.post("/", productValidator, async (req, res) => {
-    try {
+       try {
+        const { code } = req.body;
+
+        const products = await productManager.getProducts();
+
+        const isCodeRepeated = products.some(existingProduct => existingProduct.code === code);
+
+        if (isCodeRepeated) {
+            return res.status(400).json({ message: 'Product code already exists' });
+        }
+
         const productCreated = await productManager.createProduct(req.body);
         res.status(200).json(productCreated);
     } catch (error) {

@@ -37,21 +37,6 @@ router.post('/:idCart/product/:idProd', async (req, res) => {
 
         console.log(`CARTD ID: ${idCart} --- PRODUCT ID: ${idProd}`)
 
-        /*
-        
-        const cart = await cartManager.getCartById(idCart); // Llama al metodo que busca el carrito por su ID
-        const product = await productManager.getProductById(Number(idProd)); // Llama al método que busca el producto por su ID
-
-
-        if (product && cart) {
-            // Si el producto y el carrito existen
-            await cartManager.saveProductToCart(idCart, idProd); // Llama al metodo para guardar el producto en el carrito
-            res.status(200).json(cart);
-        } else {
-            res.status(404).json({ message: 'Cart or product does not exist' });
-        }
-        */
-
         const cart = await cartManager.saveProductToCart(idCart, idProd); // Llama al metodo para guardar el producto en el carrito
 
         res.status(200).json(cart);

@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "status": true,
     "price": 23,
     "title": "Jeringa S/Aguja",
     "img": "noImgYet.png",
@@ -11,6 +12,7 @@
   },
   {
     "id": 2,
+    "status": true,
     "title": "Aguja",
     "description": "25/8.",
     "price": 35,
@@ -20,6 +22,7 @@
   },
   {
     "id": 3,
+    "status": true,
     "title": "Gasa Tejida",
     "description": "Sobre 10x10cm x 10u.",
     "price": 380,
@@ -29,6 +32,7 @@
   },
   {
     "id": 4,
+    "status": true,
     "title": "Gasa No Tejida",
     "description": "Sobre 10x10cm x 2u.",
     "price": 423,
@@ -38,6 +42,7 @@
   },
   {
     "id": 5,
+    "status": true,
     "title": "Venda",
     "description": "Tipo CAMBRIC - 2.5cm. x 9m.",
     "price": 200,
@@ -47,7 +52,7 @@
   },
   {
     "id": 6,
-
+    "status": true,
     "title": "Solución Fisiologica",
     "description": "Sachet x500ml.",
     "code": "ACC2501",
@@ -58,18 +63,18 @@
   },
   {
     "id": 7,
-
+    "status": true,
     "title": "Guantes",
     "description": " Talle S,M,L - Latex - Caja x100u.",
     "code": "ACC2601",
-    "price": 7500,
+    "price": 6500,
     "stock": 10,
     "category": "Deponsables",
     "thumbnails": "noImgYet."
   },
   {
     "id": 8,
-
+    "status": true,
     "title": "Alcohol Medicinal",
     "description": "Al 97% x500cc.",
     "code": "ACC2701",
@@ -80,6 +85,7 @@
   },
   {
     "id": 9,
+    "status": true,
     "title": "Alcohol en Gel",
     "description": "Pote x1kg.",
     "price": 1300,
@@ -89,9 +95,10 @@
   },
   {
     "id": 10,
+    "status": true,
     "title": "Bata de Cirugia",
     "description": "Tela de Gasa",
-    "price": 10000,
+    "price": 1970,
     "img": "img/1.png",
     "code": "ACC2901",
     "stock": 10

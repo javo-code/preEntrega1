@@ -45,53 +45,64 @@ class CartManager {
 
         try {
             const carts = await this.getCarts();
-
             const cartById = carts.find((cart) => cart.id === formattedIdCart);
-
             if (!cartById) return false;
-
             return cartById;
         } catch (error) {
             console.log(error);
         }
     }
 
-    async saveProductToCart(idCart, idProduct) {
-        try {
-            const carts = await this.getCarts();
-            let currentCart = carts.find((cart) => cart.id === Number(idCart));
+   async saveProductToCart(idCart, idProduct) {
+    try {
+        // Obtener todos los carritos
+        const carts = await this.getCarts();
+        // Encontrar el carrito actual por su ID
+let currentCart = carts.find((cart) => cart.id === Number(idCart));
 
-            if (!currentCart) {
-                throw new Error('Cart does not exist');
-            }
+// Verificar si el carrito existe
+if (!currentCart) {
+    throw new Error('Cart does not exist');
+}
 
-            const products = await productManager.getProducts(); // Obtén los productos
+// Inicializar el array 'products' en el carrito si no existe
+if (!currentCart.products) {
+    currentCart.products = [];
+}
 
-            // Busca el producto en la lista de productos por su ID
-            const productToAdd = products.find((product) => product.id === Number(idProduct));
-            if (!productToAdd) {
-                throw new Error('Product does not exist');
-            }
+// Obtener la lista de productos
+const products = await productManager.getProducts();
 
-            // Añade el producto al carrito
-            const existingProduct = currentCart.product.find((p) => p.id === Number(idProduct));
+// Encontrar el producto a agregar por su ID
+const productToAdd = products.find((product) => product.id === Number(idProduct));
 
-            if (existingProduct) {
-                existingProduct.quantity++; // Si el producto ya está en el carrito, aumenta la cantidad
-            } else {
-                // Si el producto no está en el carrito, añádelo con cantidad 1
-                currentCart.product.push({ productId: productToAdd.id, quantity: 1 });
-            }
+// Verificar si el producto existe
+if (!productToAdd) {
+    throw new Error('Product does not exist');
+}
 
-            // Guarda el carrito con el nuevo producto
-            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'))
+// Encontrar si el producto ya está en el carrito
+const existingProductIndex = currentCart.products.findIndex((p) => p.productId === productToAdd.id);
 
-            return currentCart;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+if (existingProductIndex !== -1) {
+    // Si el producto ya está en el carrito, aumentar la cantidad
+    currentCart.products[existingProductIndex].quantity++;
+} else {
+    // Si el producto no está en el carrito, añadirlo con cantidad 1
+    currentCart.products.push({ productId: productToAdd.id, quantity: 1 });
+}
+
+// Guardar el carrito con el nuevo producto
+await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
+
+return currentCart;
+    } catch (error) {
+        // Manejar cualquier error y lanzarlo de nuevo
+        console.log(error);
+        throw error;
     }
+}
+
 
 
     async deleteCart(idCart) {
