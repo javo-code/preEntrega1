@@ -34,9 +34,6 @@ router.get('/:cid', async (req, res) => {
 router.post('/:idCart/product/:idProd', async (req, res) => {
     try {
         const { idCart, idProd } = req.params; // Obtenener los valores de los parametros
-
-        console.log(`CARTD ID: ${idCart} --- PRODUCT ID: ${idProd}`)
-
         const cart = await cartManager.saveProductToCart(idCart, idProd); // Llama al metodo para guardar el producto en el carrito
 
         res.status(200).json(cart);
